@@ -79,17 +79,27 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         setState(() {
           _isComplete = true;
         });
-        initPlatformState();
-//        _initBranch();
+
+        // Initialize Deep link by using uni_link flutter
+        _initPlatformState();
+
+//         // Initialize Branch flutter to install app deep link
+//        _initBranch()
+
+        // Handle Notification call
         _handleNotificationReceived();
+
+        // Start and redirection if user logged in.
         _startAppInit();
       }
     });
 
   }
 
-  initPlatformState() async {
-    await initUniLinks();
+
+  // Initialize uni_link here
+  _initPlatformState() async {
+    await _initUniLinks();
   }
 
 
@@ -108,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 //  }
 
   /// An implementation using a [String] link
-  Future<Null> initUniLinks() async {
+  Future<Null> _initUniLinks() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       initialLink = await getInitialLink();
@@ -120,24 +130,35 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
   }
 
-
+  // Notification Receive Handler and Open Handler
   void _handleNotificationReceived() {
+
+    // Receive Handler
     OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) {
       print("Recive : ${notification.jsonRepresentation()}");
     });
 
+    // Open Handler
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       print("Opened notification: \n${result.notification.jsonRepresentation()}");
-    });
 
-    OneSignal.shared
-        .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-      print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
+
+      // Redirect after checking login user.
+      checkUserAndNavigate(context).then((res) {
+          if (res == true) {
+            Navigator.pushReplacementNamed(context, '/profile');
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login', (Route<dynamic> route) => false);
+          }
+      });
     });
 
   }
 
+
+  // App Initialize after checking user stat.
   Future<void> _startAppInit() async {
     checkUserAndNavigate(context).then((res) {
       if(_isComplete) {
