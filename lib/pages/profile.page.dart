@@ -1,41 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:notification_app/services/auth.services.dart';
+import 'package:notification_app/utilities/constants.dart';
 import 'package:toast/toast.dart';
 
-class HomePage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
 
   final String title;
-  HomePage({Key key, this.title}) : super(key: key);
+  ProfilePage({Key key, this.title}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-
+class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DateTime currentBackPressTime = DateTime.now();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-
-  @override
-  void dispose() {
-    _scaffoldKey.currentState?.dispose();
-    super.dispose();
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
 //    _isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return  Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Profile'),
       ),
       key: _scaffoldKey,
       body: WillPopScope(
@@ -66,17 +52,19 @@ class _HomePageState extends State<HomePage> {
   Widget _showBody(){
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('Home Page'),
-          RaisedButton(
-            padding: EdgeInsets.all(15),
-            child: Text('Goto Profile'),
-            onPressed:() =>  Navigator.pushReplacementNamed(context, '/profile'),
-          )
-        ],
+      child: Center(
+        child: RaisedButton(
+          padding: EdgeInsets.all(15),
+          child: Text('Logout'),
+          onPressed:(){
+            setState(() {
+              logout();
+              LoginStat.isLogin = false;
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            });
+          },
+        ),
       ),
     );
   }

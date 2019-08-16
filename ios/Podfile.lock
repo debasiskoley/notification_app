@@ -1,0 +1,42 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_secure_storage (3.2.0):
+    - Flutter
+  - OneSignal (2.10.1)
+  - onesignal_flutter (2.0.2):
+    - Flutter
+    - OneSignal (= 2.10.1)
+  - uni_links (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - OneSignal (< 3.0, >= 2.9.3)
+  - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
+  - uni_links (from `.symlinks/plugins/uni_links/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - OneSignal
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  onesignal_flutter:
+    :path: ".symlinks/plugins/onesignal_flutter/ios"
+  uni_links:
+    :path: ".symlinks/plugins/uni_links/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  flutter_secure_storage: 0c5779648ff644110e507909b77a57e620cbbf8b
+  OneSignal: 8fb749fa07f88006403c9b659a570fb7fb74519a
+  onesignal_flutter: f0eab25765dd95978c19dc64a87a8a33387909fa
+  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
+
+PODFILE CHECKSUM: 0c09df4d1cbb09fc07ba439f028f8487f66d6176
+
+COCOAPODS: 1.6.1

@@ -4,6 +4,7 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:notification_app/services/auth.services.dart';
 import 'package:notification_app/utilities/constants.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:uni_links/uni_links.dart';
 
 import 'config/route.dart';
@@ -17,7 +18,21 @@ class _AppState extends State<App>  with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+    _initPushNotification();
     super.initState();
+  }
+
+
+  Future<void> _initPushNotification() async {
+    if(!mounted) return;
+
+    var settings = {
+      OSiOSSettings.autoPrompt: true,
+      OSiOSSettings.promptBeforeOpeningPushUrl: true
+    };
+
+    OneSignal.shared.init("a85cc974-b433-4e1f-96af-080bf43e5fb3", iOSSettings: settings);
+    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
   }
 
   @override
@@ -66,6 +81,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         });
         initPlatformState();
 //        _initBranch();
+        _handleNotificationReceived();
         _startAppInit();
       }
     });
@@ -101,6 +117,24 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     } on FormatException {
       initialLink = 'Failed to parse the initial link as Uri.';
     }
+
+  }
+
+
+  void _handleNotificationReceived() {
+    OneSignal.shared.setNotificationReceivedHandler((OSNotification notification) {
+      print("Recive : ${notification.jsonRepresentation()}");
+    });
+
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      print("Opened notification: \n${result.notification.jsonRepresentation()}");
+    });
+
+    OneSignal.shared
+        .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+      print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
+    });
 
   }
 
